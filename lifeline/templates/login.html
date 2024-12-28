@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .form-container{
+            margin: 15rem;
+            margin-left: 35rem;
+           background-color: rgb(205, 202, 193);
+            width: 20rem;
+            height: 15rem;
+        }
+         h1{
+            margin-left: 100px;
+        }
+        form{
+           
+            flex-direction: column;
+            gap: 20px;
+
+        }
+        form button{
+            margin: 2rem;
+            margin-left: 8rem;
+        }
+        form label{
+            margin-right:3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div>
+        <h1>login</h1></div>
+        <form action="" method="post">
+            {%csrf_token%}
+            <label for="name">name:
+            <input type="text" placeholder="name" name="uname" required>
+            </label><br><br>
+            <label for="password">password:
+            <input type="text" placeholder="password" name="password" required>
+        </label><br><br>
+        <button type="submit">login</button>
+        </form>
+    </div>
+</body>
+</html>

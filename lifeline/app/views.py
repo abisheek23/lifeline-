@@ -33,11 +33,54 @@ def login1(req):
 
 #    admin
 
+def add_department(req):
+    if 'admin'in req.session:
+        if req.method == 'POST':
+            name= req.POST['name']
+            department.objects.create(name=name.lower())
+            departments=department.objects.all()
+            return render(req,'admin/add_department.html',{'departments':departments})
+        else:
+            departments=department.objects.all()
+            return render(req,'admin/add_department.html',{'departments':departments})
+    else:
+        return redirect(login1)
+
+def add_staff(req):
+    if 'admin' in req.session:
+        if req.method=='POST':
+            file=req.FILES['image']
+            name=req.POST['staff-name']
+            staff_id=req.POST['staff-id']
+            email=req.POST['staff-email']
+            position=req.POST['position']
+            depart=req.POST.get('department')
+            try:
+              departments=department.objects.get(pk=depart)
+            except:
+                departments=None
+            data=Staff.objects.create(name=name,staff_id=staff_id,email=email,position=position,department=departments,img=file)
+            data.save()
+            return redirect(admin_home)
+        else:
+            depart=department.objects.all()
+            return render(req,'admin/add_staff.html',{'depart':depart})
+    else:
+       return redirect(login1)
+    
+def view_staff(req):
+    staffs=Staff.objects.all()
+    return render(req,'admin/view_staff.html',{'staff':staffs})
+
+ 
+
+
+
 def admin_home(req):
     if 'admin' in req.session:
         return render(req,'admin/adminhome.html')
     else:
-        return redirect(login)
+        return redirect(login1)
 
 # user
 

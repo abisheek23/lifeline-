@@ -3,41 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dynamic Form Example</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="form-container">
-        <form action="" method="post">
-            <div class="mb-3">
-            <label for="name">name
-                <input type="text" placeholder="name">
-            </label></div>
-            <div class="mb-3">
-            <label for="id">id
-                <input type="text"placeholder="staff id ">
-            </label></div>
-            <div class="mb-3">
-            <label for="email">email
-                <input type="email" placeholder="email">
-            </label></div>
-            <div class="mb-3">
-                <label for="dropdown" class="form-label">Select an Option</label>
-                <select class="form-select w-25" id="dropdown">
-                  <option value="1">docter</option>
-                  <option value="2">pharmasist</option>
-                  <option value="3">nurse </option>
-                </select>
-              </div>
-              <div class="mb-3">
-            <label for="Specialists ">Specialists
-                <input type="text" placeholder="Specialists">
-            </label></div>
-            <button type="submit"> submit</button>
-        </form>
+    <div class="container mt-5 w-25 bg-info">
+        <div class="form-container">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="image" class="form-label">staff Image</label>
+                    <input type="file" class="form-control" name="image" accept="image/*" required>
+                 
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Name" name="staff-name">
+                </div>
+                <div class="mb-3">
+                    <label for="id" class="form-label">Staff ID</label>
+                    <input type="text" id="id" class="form-control" placeholder="Staff ID" name="staff-id">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="Email" name="staff-email">
+                </div>
+                <div class="mb-3">
+                    <label for="dropdown" class="form-label">Select an Option</label>
+                    <select class="form-select" id="dropdown" name="position" onchange="toggleSpecialistsField()">
+                        
+                        <option value="doctor">Doctor</option>
+                        <option value="pharmacist">Pharmacist</option>
+                        <option value="nurse">Nurse</option>
+                    </select>
+                </div>
+                <div class="mb-3" id="specialistsField" style="display: none;">
+                    <label for="department" class="form-label">department</label>
+                    <select class="form-control" id="department" name="department" >
+                        <option value="" disabled selected>Select a department</option>
+                        {% for d in depart %}
+                            <option value="{{ d.pk }}">{{ d.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- <div class="mb-3" id="specialistsField" style="display: none;">
+                    <label for="specialists" class="form-label">Specialists</label>
+                    <input type="text" id="specialists" class="form-control" placeholder="Specialists">
+                </div> -->
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary mt-5">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <script></script>
+
+    <script>
+        function toggleSpecialistsField() {
+            const dropdown = document.getElementById("dropdown");
+            const specialistsField = document.getElementById("specialistsField");
+
+            // Show Specialists field only if "Doctor" is selected
+            if (dropdown.value === "1") {
+                specialistsField.style.display = "block";
+            } else {
+                specialistsField.style.display = "none";
+            }
+        }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

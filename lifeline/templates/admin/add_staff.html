@@ -41,7 +41,7 @@
                     <select class="form-control" id="department" name="department" >
                         <option value="" disabled selected>Select a department</option>
                         {% for d in depart %}
-                            <option value="{{ d.pk }}">{{ d.name }}</option>
+                            <option value="{{ d.name }}">{{ d.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -62,7 +62,7 @@
             const specialistsField = document.getElementById("specialistsField");
 
             // Show Specialists field only if "Doctor" is selected
-            if (dropdown.value === "1") {
+            if (dropdown.value === "doctor") {
                 specialistsField.style.display = "block";
             } else {
                 specialistsField.style.display = "none";

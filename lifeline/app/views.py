@@ -10,8 +10,9 @@ import os
 def login1(req):
     if 'admin' in req.session:
         return redirect(admin_home)
-    if 'user' in req.session:
-        return redirect (user_home)
+    staffs=Staff.objects.all()
+    if 'staffs' in req.session:
+        return redirect (docter_home)
     if req.method=='POST':
         uname=req.POST['uname']
         password=req.POST['password']
@@ -23,10 +24,20 @@ def login1(req):
               return redirect(admin_home)
             else:
                 req.session['user']=uname
-                return redirect(user_home)
+                return redirect(docter_home)
         else:
-            messages.warning(req, " invalid user name or password")
-            return redirect(login)
+            try:
+              staff=Staff.objects.get(email=uname,staff_id=password,)
+              if staff.position=='doctor':
+                  return redirect(docter_home)
+                  
+                  
+            except:
+                messages.warning(req, " invalid user name or password")
+                return redirect(login1)
+            
+
+          
     else:
         return render(req,'login.html')
    
@@ -58,7 +69,7 @@ def add_staff(req):
             try:
               departments=department.objects.get(pk=depart)
             except:
-                departments=None
+                   departments=None
             data=Staff.objects.create(name=name,staff_id=staff_id,email=email,position=position,department=departments,img=file)
             data.save()
             return redirect(admin_home)
@@ -72,7 +83,14 @@ def view_staff(req):
     staffs=Staff.objects.all()
     return render(req,'admin/view_staff.html',{'staff':staffs})
 
- 
+def delet_staff(req,pk):
+    data=Staff.objects.get(pk=pk)
+    file=data.img.url
+    file=file.split('/')[-1]
+    os.remove('media/'+file)
+    data.delete()
+    return redirect(admin_home)
+
 
 
 
@@ -84,6 +102,6 @@ def admin_home(req):
 
 # user
 
-def user_home(req):
+def docter_home(req):
     if 'user' in req.session:
-        return render (req,'user/user_home.html')
+        return render (req,'staff/docter.html')

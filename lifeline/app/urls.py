@@ -8,5 +8,6 @@ urlpatterns = [
  path('department',views.add_department),
  path('staff',views.add_staff),
  path('view_staff',views.view_staff),
- path('home',views.user_home),
+ path('home',views.docter_home),
+ path('delete/<pk>',views.delet_staff),
 ]
